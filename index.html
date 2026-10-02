@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CompTIA Tech+ Practice Exam</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#121a2b;
+      --panel2:#0f172a;
+      --panel3:#1b2740;
+      --border:#2c3b57;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --accent:#38bdf8;
+      --accent2:#0ea5e9;
+      --green:#22c55e;
+      --red:#ef4444;
+      --yellow:#f59e0b;
+      --cyan:#06b6d4;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:linear-gradient(180deg,#08101d,#0b1020 30%,#0b1020);
+      color:var(--text);
+    }
+    .hidden{display:none!important}
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:14px 20px;
+      background:#0d1528;
+      border-bottom:1px solid var(--border);
+    }
+    .topbar .title{font-size:1.05rem;font-weight:700}
+    .timer{
+      background:#0b3b63;
+      color:#dbeafe;
+      border:1px solid #1d4ed8;
+      padding:8px 14px;
+      border-radius:10px;
+      font-weight:700;
+      min-width:92px;
+      text-align:center;
+    }
+    .container{
+      max-width:1400px;
+      margin:20px auto;
+      padding:0 16px 24px;
+    }
+    .card{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:16px;
+      box-shadow:0 10px 30px rgba(0,0,0,.28);
+    }
+    .start-wrap,.results-wrap{
+      max-width:980px;
+      margin:40px auto;
+      padding:0 16px;
+    }
+    .start-card,.results-card{padding:28px}
+    h1,h2,h3,h4{margin-top:0;color:#f8fafc}
+    p,li{line-height:1.5}
+    .small{font-size:.92rem;color:var(--muted)}
+    .muted{color:var(--muted)}
+    label{
+      display:block;
+      margin:16px 0 8px;
+      font-weight:700;
+    }
+    select,input[type="number"]{
+      width:100%;
+      max-width:280px;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:var(--panel2);
+      color:var(--text);
+      font-size:1rem;
+    }
+    button{
+      border:none;
+      border-radius:10px;
+      padding:12px 16px;
+      cursor:pointer;
+      font-size:.98rem;
+      font-weight:700;
+      transition:.15s ease;
+    }
+    .btn-primary{background:var(--accent2);color:white}
+    .btn-primary:hover{background:#0284c7}
+    .btn-secondary{
+      background:var(--panel3);
+      color:var(--text);
+      border:1px solid var(--border);
+    }
+    .btn-secondary:hover{background:#243554}
+    .btn-danger{background:#b91c1c;color:white}
+    .btn-danger:hover{background:#991b1b}
+    .exam-layout{
+      display:grid;
+      grid-template-columns:310px 1fr;
+      gap:20px;
+    }
+    .sidebar{
+      padding:18px;
+      position:sticky;
+      top:74px;
+      height:fit-content;
+    }
+    .legend{
+      margin-bottom:14px;
+      font-size:.92rem;
+      color:var(--muted);
+    }
+    .legend-item{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin:8px 0;
+    }
+    .swatch{
+      width:14px;height:14px;border-radius:4px;
+      border:1px solid var(--border);display:inline-block;
+    }
+    .palette{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:8px;
+      margin:14px 0 10px;
+    }
+    .palette-btn{
+      text-align:center;
+      padding:10px 0;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:var(--panel2);
+      cursor:pointer;
+      user-select:none;
+      font-weight:700;
+      font-size:.95rem;
+    }
+    .palette-btn.current{outline:2px solid var(--accent)}
+    .palette-btn.answered{
+      background:#0d2d19;
+      border-color:#1e7a3f;
+      color:#bbf7d0;
+    }
+    .palette-btn.flagged{
+      background:#3a2507;
+      border-color:#a16207;
+      color:#fde68a;
+    }
+    .palette-btn.review{
+      background:#0a3442;
+      border-color:#0e7490;
+      color:#a5f3fc;
+    }
+    .sidebar-actions button{
+      width:100%;
+      margin-top:10px;
+    }
+    .main{
+      padding:24px;
+      min-height:700px;
+    }
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+      color:var(--muted);
+      font-size:.95rem;
+      margin-bottom:8px;
+    }
+    .question{
+      font-size:1.2rem;
+      line-height:1.55;
+      font-weight:700;
+      margin:18px 0 20px;
+      color:#f8fafc;
+    }
+    .option{
+      background:var(--panel2);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:14px;
+      margin:12px 0;
+      cursor:pointer;
+      transition:.15s ease;
+    }
+    .option:hover{
+      background:#13203a;
+      border-color:#4da3d9;
+    }
+    .option.selected{
+      border:2px solid var(--accent);
+      background:#10233f;
+    }
+    .option.correct{
+      background:#0d2d19;
+      border-color:#1e7a3f;
+      color:#dcfce7;
+    }
+    .option.incorrect{
+      background:#3a1111;
+      border-color:#b91c1c;
+      color:#fee2e2;
+    }
+    .explanation{
+      margin-top:20px;
+      padding:18px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#0c1528;
+    }
+    .good{color:#86efac}
+    .bad{color:#fca5a5}
+    .neutral{color:#cbd5e1}
+    .controls{
+      margin-top:24px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .controls-left,.controls-right{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .status{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:.94rem;
+    }
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:14px;
+      margin:18px 0 20px;
+    }
+    .summary-box{
+      background:var(--panel2);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:16px;
+    }
+    .results-sections{
+      display:grid;
+      gap:18px;
+      margin-top:18px;
+    }
+    .domain-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:16px;
+    }
+    .domain-table th,.domain-table td{
+      border-bottom:1px solid var(--border);
+      padding:12px;
+      text-align:left;
+    }
+    .domain-table th{
+      background:#0d3d56;
+      color:#f8fafc;
+    }
+    .study-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:14px;
+    }
+    .priority-high{border-left:5px solid var(--red)}
+    .priority-medium{border-left:5px solid var(--yellow)}
+    .priority-light{border-left:5px solid var(--cyan)}
+    .priority-strong{border-left:5px solid var(--green)}
+    @media (max-width:980px){
+      .exam-layout{grid-template-columns:1fr}
+      .sidebar{position:static}
+    }
+  </style>
+</head>
+<body>
+
+  <div id="startView" class="start-wrap">
+    <div class="card start-card">
+      <h1>CompTIA Tech+ Practice Exam</h1>
+      <p>This practice exam uses a question mix close to the Tech+ domain weighting.</p>
+
+      <table class="domain-table">
+        <thead>
+          <tr>
+            <th>Domain</th>
+            <th>Questions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1.0 IT Concepts and Terminology</td><td>9</td></tr>
+          <tr><td>2.0 Infrastructure</td><td>17</td></tr>
+          <tr><td>3.0 Applications and Software</td><td>13</td></tr>
+          <tr><td>4.0 Software Development Concepts</td><td>9</td></tr>
+          <tr><td>5.0 Data and Database Fundamentals</td><td>9</td></tr>
+          <tr><td>6.0 Security</td><td>13</td></tr>
+          <tr><td><strong>Total</strong></td><td><strong>70</strong></td></tr>
+        </tbody>
+      </table>
+
+      <label for="extraTimeChoice">Do you want to add extra time?</label>
+      <select id="extraTimeChoice" onchange="toggleExtraTime()">
+        <option value="no">No</option>
+        <option value="yes">Yes</option>
+      </select>
+
+      <div id="extraTimeRow" class="hidden">
+        <label for="extraMinutes">How many extra minutes?</label>
+        <input type="number" id="extraMinutes" min="1" max="180" value="30">
+      </div>
+
+      <div style="margin-top:18px;">
+        <button class="btn-primary" onclick="startExam()">Start Exam</button>
+      </div>
+
+      <p class="small" style="margin-top:16px;">
+        Questions and answer choices are randomized. Study explanations are available after answering.
+      </p>
+    </div>
+  </div>
+
+  <div id="examView" class="hidden">
+    <div class="topbar">
+      <div class="title">CompTIA Tech+ Practice Exam</div>
+      <div id="timer" class="timer">90:00</div>
+    </div>
+
+    <div class="container">
+      <div class="exam-layout">
+        <aside class="card sidebar">
+          <h3>Question Navigator</h3>
+
+          <div class="legend">
+            <div class="legend-item"><span class="swatch" style="background:#0f172a;"></span> Unanswered</div>
+            <div class="legend-item"><span class="swatch" style="background:#0d2d19;border-color:#1e7a3f;"></span> Answered</div>
+            <div class="legend-item"><span class="swatch" style="background:#3a2507;border-color:#a16207;"></span> Flagged</div>
+            <div class="legend-item"><span class="swatch" style="background:#0a3442;border-color:#0e7490;"></span> Review Mode</div>
+          </div>
+
+          <div id="palette" class="palette"></div>
+
+          <div class="sidebar-actions">
+            <button class="btn-secondary" onclick="goToFirstUnanswered()">Go to First Unanswered</button>
+            <button class="btn-danger" onclick="submitExam(true)">Submit Exam</button>
+          </div>
+        </aside>
+
+        <main class="card main">
+          <div class="meta">
+            <div id="qMeta">Question 1 of 70</div>
+            <div id="domainMeta">Domain</div>
+          </div>
+
+          <div id="questionText" class="question"></div>
+          <div id="optionsBox"></div>
+
+          <div class="controls">
+            <div class="controls-left">
+              <button class="btn-secondary" onclick="prevQuestion()">Previous</button>
+              <button class="btn-secondary" onclick="nextQuestion()">Next</button>
+              <button class="btn-secondary" onclick="toggleExplanation()">Explanation</button>
+            </div>
+            <div class="controls-right">
+              <button class="btn-secondary" onclick="toggleFlag()">Flag / Unflag</button>
+              <button class="btn-primary" onclick="submitExam(true)">Submit</button>
+            </div>
+          </div>
+
+          <div id="explanationBox" class="explanation hidden"></div>
+          <div id="statusLine" class="status"></div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <div id="resultsView" class="results-wrap hidden">
+    <div class="card results-card">
+      <h2>Exam Results</h2>
+      <div id="summaryGrid" class="summary-grid"></div>
+      <div id="resultsSections" class="results-sections"></div>
+      <div style="margin-top:18px;">
+        <button class="btn-secondary" onclick="enterReviewMode()">Review Answers</button>
+        <button class="btn-primary" onclick="restartExam()">Restart Exam</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function makeQuestion(domain, q, options, answer, explainCorrect, explainChoices){
+      return { domain, q, options, answer, explainCorrect, explainChoices };
+    }
+
+    const bank = {
+      d1: [
+        makeQuestion(
+          "1.0 IT Concepts and Terminology",
+          "A keyboard is primarily which type of computing function?",
+          ["Output","Storage","Input","Processing"],
+          2,
+          "Input is correct because a keyboard sends data into the computer.",
+          [
+            "Output is wrong because a keyboard does not display or present results from the computer to the user.",
+            "Storage is wrong because a keyboard does not save data for later retrieval.",
+            "Input is correct because a keyboard is used to enter information into a system.",
+            "Processing is wrong because processing happens when the computer manipulates or analyzes data, usually with the CPU."
+          ]
+        ),
+        makeQuestion(
+          "1.0 IT Concepts and Terminology",
+          "A printer producing a report is an example of:",
+          ["Input","Output","Storage","Processing"],
+          1,
+          "Output is correct because the computer is presenting processed information to the user.",
+          [
+            "Input is wrong because a printer is not sending user data into the computer.",
+            "Output is correct because printing is a way the computer communicates results to the user.",
+            "Storage is wrong because the main function here is not preserving the data for later use.",
+            "Processing is wrong because the printer is not analyzing or transforming data."
+          ]
+        ),
+        makeQuestion(
+          "1.0 IT Concepts and Terminology",
+          "Which numbering system is native to computers?",
+          ["Decimal","Hexadecimal","Binary","Unicode"],
+          2,
+          "Binary is correct because computers use 0s and 1s internally.",
+          [
+            "Decimal is wrong because it is the base-10 system people commonly use, not the computer's native format.",
+            "Hexadecimal is wrong because it is mainly a compact way for humans to represent binary values.",
+            "Binary is correct because digital systems fundamentally use two states, represented as 0 and 1.",
+            "Unicode is wrong because Unicode is a character encoding standard, not a numbering system used as the machine's native base."
+          ]
+        ),
+        makeQuestion(
+          "1.0 IT Concepts and Terminology",
+          "Which character standard is best for supporting many world languages?",
+          ["ASCII","Unicode","Binary","Decimal"],
+          1,
+          "Unicode is correct because it supports characters from many languages and symbol sets.",
+          [
+            "ASCII is wrong because it has a limited character set and mainly supports basic English characters.",
+            "Unicode is correct because it can represent characters from many languages around the world.",
+            "Binary is wrong because binary is a representation format, not a multilingual text standard.",
+            "Decimal is wrong because decimal is a numbering system, not a character encoding standard."
+          ]
+        ),
+        makeQuestion(
+          "1.0 IT Concepts and Terminology",
+          "Which unit measures network throughput?",
+          ["GHz","GB","bps","dpi"],
+          2,
+          "bps is correct because network data speed is measured in bits per second.",
+          [
+            "GHz is wrong because it measures frequency, such as CPU clock speed.",
+            "GB is wrong because gigabytes measure storage capacity rather than transmission speed.",
+            "bps is correct because bits per second is the standard unit for network throughput.",
+            "dpi is wrong because dots per inch measures print or image resolution."
+          ]
+        ),
+        makeQuestion(
+          "1.0 IT Concepts and Terminology",
+          "What does a capital B in MB represent?",
+          ["Bits","Bytes","Binary","Bandwidth"],
+          1,
+          "Bytes is correct because a capital B refers to bytes, commonly used for storage amounts.",
+          [
+            "Bits is wrong because bits are indicated with a lowercase b, not a capital B.",
+            "Bytes is correct because MB means megabytes.",
+            "Binary is wrong because the B in MB is not standing for binary.",
+            "Bandwidth is wrong because B here is part of the storage unit abbreviation, not a word for network capacity."
+          ]
+        ),
+        makeQuestion(
+          "1.0 IT Concepts and Terminology",
+          "After identifying a problem, what is the next troubleshooting step?",
+          ["Document findings","Test the theory","Establish a theory of probable cause","Implement the solution"],
+          2,
+          "Establish a theory of probable cause is correct because it is step two in the troubleshooting process.",
+          [
+            "Document findings is wrong because documentation is the final step after the issue is resolved and verified.",
+            "Test the theory is wrong because a theory must be created before it can be tested.",
+            "Establish a theory of probable cause is correct because it follows identifying the problem.",
+            "Implement the solution is wrong because you should determine the likely cause before applying a fix."
+          ]
+        ),
+        makeQuestion(
+          "1.0 IT Concepts and Terminology",
+          "Which device is most associated with processing data?",
+          ["CPU","Monitor","Keyboard","Printer"],
+          0,
+          "CPU is correct because it performs calculations and executes instructions.",
+          [
+            "CPU is correct because it is the primary component responsible for processing instructions.",
+            "Monitor is wrong because it is an output device that displays results.",
+            "Keyboard is wrong because it is an input device used to enter information.",
+            "Printer is wrong because it is an output device used to produce hard-copy results."
+          ]
+        ),
+        makeQuestion(
+          "1.0 IT Concepts and Terminology",
+          "Saving a document to an SSD is an example of:",
+          ["Input","Processing","Storage","Output"],
+          2,
+          "Storage is correct because the data is being kept for future use.",
+          [
+            "Input is wrong because no new data is being entered into the computer at that point.",
+            "Processing is wrong because the main action is saving the data, not calculating or transforming it.",
+            "Storage is correct because the file is being written to a persistent device for later retrieval.",
+            "Output is wrong because the data is not being presented to the user as a result."
+          ]
+        )
+      ],
+
+      d2: [
+        makeQuestion(
+          "2.0 Infrastructure",
+          "Which device is best for heavy video editing or 3D design work?",
+          ["Tablet","Workstation","Chromebook","Smartphone"],
+          1,
+          "Workstation is correct because it is built for high-performance professional workloads.",
+          [
+            "Tablet is wrong because tablets are generally optimized for portability and light tasks rather than intensive professional applications.",
+            "Workstation is correct because it is designed for demanding tasks such as CAD, 3D rendering, and video editing.",
+            "Chromebook is wrong because Chromebooks are usually intended for lightweight, web-based workloads.",
+            "Smartphone is wrong because a smartphone is not suited for high-end content creation workflows."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "A device dedicated to hosting web pages for other users is a:",
+          ["Server","Workstation","Switch","Tablet"],
+          0,
+          "Server is correct because it provides services to other systems.",
+          [
+            "Server is correct because hosting websites for clients is a classic server role.",
+            "Workstation is wrong because a workstation is intended for an end user's high-performance tasks, not primarily shared hosting services.",
+            "Switch is wrong because a switch forwards network traffic inside a LAN rather than serving web content.",
+            "Tablet is wrong because a tablet is a client device, not typically a dedicated host for shared web services."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "A smart thermostat connected to the internet is an example of:",
+          ["IoT","Hypervisor","Server cluster","RAID"],
+          0,
+          "IoT is correct because connected everyday devices fall into that category.",
+          [
+            "IoT is correct because internet-connected consumer devices like thermostats are part of the Internet of Things.",
+            "Hypervisor is wrong because a hypervisor is software that manages virtual machines.",
+            "Server cluster is wrong because a thermostat is not a group of coordinated servers.",
+            "RAID is wrong because RAID is a storage redundancy/performance technology, not a smart device category."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "Which component provides temporary volatile memory?",
+          ["SSD","RAM","HDD","Blu-ray"],
+          1,
+          "RAM is correct because it temporarily stores active data and loses contents without power.",
+          [
+            "SSD is wrong because it is non-volatile storage and keeps data even when power is removed.",
+            "RAM is correct because it is the computer's primary volatile working memory.",
+            "HDD is wrong because it is long-term non-volatile storage, not temporary memory.",
+            "Blu-ray is wrong because it is optical media, not active system memory."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "Which component allows a computer to connect to a network?",
+          ["NIC","GPU","PSU","Motherboard battery"],
+          0,
+          "NIC is correct because the Network Interface Card provides networking capability.",
+          [
+            "NIC is correct because it provides the hardware interface for wired or wireless networking.",
+            "GPU is wrong because it handles graphics processing, not network connectivity.",
+            "PSU is wrong because the power supply unit provides electrical power to components.",
+            "Motherboard battery is wrong because it preserves firmware settings and the clock, not network access."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "Which is usually faster and has no moving parts?",
+          ["HDD","SSD","Tape drive","Optical disc"],
+          1,
+          "SSD is correct because it uses flash memory and has no moving mechanical parts.",
+          [
+            "HDD is wrong because hard drives use spinning platters and moving heads, making them slower than SSDs.",
+            "SSD is correct because flash storage is faster and has no moving parts.",
+            "Tape drive is wrong because tape is primarily used for backup and archival storage, not speed.",
+            "Optical disc is wrong because optical media is slower and not designed for high-performance storage."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "Which storage type is volatile?",
+          ["RAM","SSD","HDD","USB flash drive"],
+          0,
+          "RAM is correct because it requires power to maintain data.",
+          [
+            "RAM is correct because it loses its contents when power is removed.",
+            "SSD is wrong because solid-state drives retain data without power.",
+            "HDD is wrong because hard drives are non-volatile storage devices.",
+            "USB flash drive is wrong because flash storage is also non-volatile."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "Which permanent storage option is typically the fastest?",
+          ["NVMe SSD","DVD","Tape","RAM"],
+          0,
+          "NVMe SSD is correct because it provides very high-speed non-volatile storage.",
+          [
+            "NVMe SSD is correct because it uses a fast interface optimized for solid-state storage performance.",
+            "DVD is wrong because optical media is much slower than SSD storage.",
+            "Tape is wrong because tape is intended for backup and archival, not fast access.",
+            "RAM is wrong because although it is very fast, it is volatile and not permanent storage."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "What does Plug-and-Play do?",
+          ["Encrypts files","Automatically detects and configures supported devices","Speeds up the CPU","Creates virtual machines"],
+          1,
+          "Automatically detects and configures supported devices is correct because that is the purpose of Plug-and-Play.",
+          [
+            "Encrypts files is wrong because Plug-and-Play is about device detection and configuration, not encryption.",
+            "Automatically detects and configures supported devices is correct because that is exactly what PnP does.",
+            "Speeds up the CPU is wrong because Plug-and-Play does not improve processor performance.",
+            "Creates virtual machines is wrong because virtualization is unrelated to PnP."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "Which device provides battery backup during power loss?",
+          ["UPS","Surge protector","Router","Patch panel"],
+          0,
+          "UPS is correct because an uninterruptible power supply provides temporary emergency power.",
+          [
+            "UPS is correct because it can keep devices powered briefly during an outage.",
+            "Surge protector is wrong because it protects against voltage spikes but does not usually provide backup power.",
+            "Router is wrong because it is a networking device, not a backup power device.",
+            "Patch panel is wrong because it organizes network cable terminations and has nothing to do with battery backup."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "Which connector is standard for Ethernet cables?",
+          ["RJ45","HDMI","USB-C","VGA"],
+          0,
+          "RJ45 is correct because it is the standard connector used with Ethernet cabling.",
+          [
+            "RJ45 is correct because it is the common connector used for Ethernet network cables.",
+            "HDMI is wrong because it is used for digital audio and video connections.",
+            "USB-C is wrong because it is a general-purpose data, display, and power connector, not the standard Ethernet plug.",
+            "VGA is wrong because it is an older analog video connector."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "Which video interface commonly carries both audio and video?",
+          ["VGA","HDMI","PS/2","Serial"],
+          1,
+          "HDMI is correct because it carries digital video and audio together.",
+          [
+            "VGA is wrong because it is analog and normally carries video only.",
+            "HDMI is correct because it supports both digital audio and video over one cable.",
+            "PS/2 is wrong because it is an older interface for keyboards and mice.",
+            "Serial is wrong because it is not the standard answer for modern combined audio/video display output."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "NFC is mainly used for:",
+          ["Long-range internet service","Short-range contactless communication","GPU acceleration","Fiber backbones"],
+          1,
+          "Short-range contactless communication is correct because NFC is used for close proximity exchanges like mobile payments.",
+          [
+            "Long-range internet service is wrong because NFC works only over very short distances.",
+            "Short-range contactless communication is correct because NFC is designed for near-field interactions such as tap-to-pay.",
+            "GPU acceleration is wrong because NFC is a wireless communication technology, not a graphics technology.",
+            "Fiber backbones is wrong because NFC is not a long-distance wired network medium."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "A Type 1 hypervisor runs:",
+          ["On top of a host OS","Directly on the hardware","Inside a web browser","Only in cloud storage"],
+          1,
+          "Directly on the hardware is correct because Type 1 hypervisors are bare-metal hypervisors.",
+          [
+            "On top of a host OS is wrong because that describes a Type 2 hypervisor.",
+            "Directly on the hardware is correct because Type 1 hypervisors run on bare metal.",
+            "Inside a web browser is wrong because hypervisors do not operate as browser applications.",
+            "Only in cloud storage is wrong because cloud storage is not where a hypervisor itself runs."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "Which cloud model provides ready-to-use software through the web?",
+          ["IaaS","PaaS","SaaS","RAID"],
+          2,
+          "SaaS is correct because it delivers complete software applications over the web.",
+          [
+            "IaaS is wrong because it provides infrastructure resources such as virtual servers and storage rather than end-user software.",
+            "PaaS is wrong because it provides a platform for application development and deployment.",
+            "SaaS is correct because it provides finished software applications to end users over the internet.",
+            "RAID is wrong because RAID is a storage technology, not a cloud service model."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "Which internet service type often has the highest latency?",
+          ["Fiber","Cable","DSL","Satellite"],
+          3,
+          "Satellite is correct because data must travel long distances, causing more delay.",
+          [
+            "Fiber is wrong because fiber usually offers low latency and very high performance.",
+            "Cable is wrong because while it may slow during congestion, it is usually lower latency than satellite.",
+            "DSL is wrong because it is generally slower than fiber but still does not usually have the extreme latency of satellite.",
+            "Satellite is correct because signals travel very long distances to and from orbiting equipment, increasing delay."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "Which device connects different networks and routes traffic by IP address?",
+          ["Switch","Router","Hub","Access point"],
+          1,
+          "Router is correct because routers forward traffic between networks using IP addresses.",
+          [
+            "Switch is wrong because switches mainly forward traffic within a LAN using MAC addresses.",
+            "Router is correct because routers connect different networks and make forwarding decisions using IP information.",
+            "Hub is wrong because hubs repeat traffic blindly and do not intelligently route packets.",
+            "Access point is wrong because it primarily provides wireless network access rather than routing between networks."
+          ]
+        ),
+        makeQuestion(
+          "2.0 Infrastructure",
+          "Which Wi-Fi band usually provides better range?",
+          ["5 GHz","2.4 GHz","60 GHz","None of these"],
+          1,
+          "2.4 GHz is correct because it generally travels farther and penetrates walls better.",
+          [
+            "5 GHz is wrong because it usually provides higher speed but shorter range than 2.4 GHz.",
+            "2.4 GHz is correct because it offers better range and wall penetration in many environments.",
+            "60 GHz is wrong because it is very short range and does not penetrate obstacles well.",
+            "None of these is wrong because 2.4 GHz is the correct answer."
+          ]
+        )
+      ],
+
+      d3: [
+        makeQuestion(
+          "3.0 Applications and Software",
+          "What is the primary role of an operating system?",
+          ["Only browse the internet","Manage hardware and software resources","Only store files","Only display graphics"],
+          1,
+          "Manage hardware and software resources is correct because the OS coordinates devices, memory, processes, and applications.",
+          [
+            "Only browse the internet is wrong because web browsing is just one application task, not the core function of the OS.",
+            "Manage hardware and software resources is correct because the operating system coordinates hardware and provides a platform for applications.",
+            "Only store files is wrong because file management is only one part of what an operating system does.",
+            "Only display graphics is wrong because graphics output is just one subsystem, not the full role of an OS."
+          ]
+        ),
+        makeQuestion(
+          "3.0 Applications and Software",
+          "Which interface uses typed commands instead of graphical icons and menus?",
+          ["GUI","CLI","Touchscreen","File explorer"],
+          1,
+          "CLI is correct because a command-line interface requires users to type commands.",
+          [
+            "GUI is wrong because a graphical user interface uses windows, menus, and icons rather than typed commands.",
+            "CLI is correct because it is a text-based interface where users enter commands directly.",
+            "Touchscreen is wrong because that describes an input method, not specifically a command-based interface type.",
+            "File explorer is wrong because it is typically a graphical file management tool, not the general answer for typed commands."
+          ]
+        ),
+        makeQuestion(
+          "3.0 Applications and Software",
+          "Which type of software is best for formulas, tables, and calculations?",
+          ["Spreadsheet","Presentation","Remote support","Media player"],
+          0,
+          "Spreadsheet is correct because spreadsheets are designed for calculations and structured numeric data.",
+          [
+            "Spreadsheet is correct because it is designed for formulas, tables, calculations, and charting.",
+            "Presentation is wrong because it is mainly used to create slides for visual communication.",
+            "Remote support is wrong because it is used for accessing and troubleshooting other systems.",
+            "Media player is wrong because it is used to play audio or video content."
+          ]
+        ),
+        makeQuestion(
+          "3.0 Applications and Software",
+          "Which type of software allows a technician to access a user's computer from another location?",
+          ["Word processor","Remote support software","Hypervisor","Paint program"],
+          1,
+          "Remote support software is correct because it enables remote troubleshooting.",
+          [
+            "Word processor is wrong because it is used to create and edit documents.",
+            "Remote support software is correct because it allows viewing or controlling another computer remotely.",
+            "Hypervisor is wrong because it manages virtual machines rather than remote user support sessions.",
+            "Paint program is wrong because it is for image editing, not remote administration."
+          ]
+        ),
+        makeQuestion(
+          "3.0 Applications and Software",
+          "What is webmail?",
+          ["An installed mail app only","Email accessed through a browser","A hardware email device","A type of spreadsheet"],
+          1,
+          "Email accessed through a browser is correct because webmail runs in a web interface.",
+          [
+            "An installed mail app only is wrong because that describes a local email client rather than webmail.",
+            "Email accessed through a browser is correct because webmail is used through a website or web interface.",
+            "A hardware email device is wrong because webmail is a service/interface, not a hardware product.",
+            "A type of spreadsheet is wrong because email services are unrelated to spreadsheet software."
+          ]
+        ),
+        makeQuestion(
+          "3.0 Applications and Software",
+          "If a webpage is loading old content, what should you try first?",
+          ["Replace the NIC","Clear the browser cache","Reinstall the motherboard","Disable the monitor"],
+          1,
+          "Clear the browser cache is correct because cached files may cause outdated content to appear.",
+          [
+            "Replace the NIC is wrong because stale webpage content is usually a browser issue, not a failed network card.",
+            "Clear the browser cache is correct because cached website files can cause an old version of the page to load.",
+            "Reinstall the motherboard is wrong because that is unrelated and far too extreme for a browser content issue.",
+            "Disable the monitor is wrong because the problem is the webpage data being shown, not the display hardware."
+          ]
+        ),
+        makeQuestion(
+          "3.0 Applications and Software",
+          "What does private browsing mainly do?",
+          ["Makes you invisible on the internet","Prevents local history/cookies from being saved for that session","Encrypts all files","Increases CPU speed"],
+          1,
+          "Prevents local history/cookies from being saved for that session is correct because private mode mainly limits local browser data retention.",
+          [
+            "Makes you invisible on the internet is wrong because private browsing does not hide your activity from websites, networks, or ISPs.",
+            "Prevents local history/cookies from being saved for that session is correct because that is the main local privacy feature of private mode.",
+            "Encrypts all files is wrong because private browsing does not provide whole-system or file encryption.",
+            "Increases CPU speed is wrong because private browsing is not a performance enhancement feature."
+          ]
+        ),
+        makeQuestion(
+          "3.0 Applications and Software",
+          "Browser extensions should usually be installed from:",
+          ["Any random pop-up","Trusted official sources","Unknown email attachments","Pirated software bundles"],
+          1,
+          "Trusted official sources is correct because they reduce the risk of malicious add-ons.",
+          [
+            "Any random pop-up is wrong because unverified pop-ups may lead to malicious or unsafe extensions.",
+            "Trusted official sources is correct because official stores and reputable publishers reduce security risk.",
+            "Unknown email attachments is wrong because email attachments are a common malware delivery method.",
+            "Pirated software bundles is wrong because they are untrusted and often include harmful or unwanted software."
+          ]
+        ),
+        makeQuestion(
+          "3.0 Applications and Software",
+          "What is generative AI?",
+          ["AI that only stores files","AI that creates new content","AI that only blocks malware","AI that replaces RAM"],
+          1,
+          "AI that creates new content is correct because generative AI produces text, images, code, and other outputs.",
+          [
+            "AI that only stores files is wrong because file storage is not the main defining feature of generative AI.",
+            "AI that creates new content is correct because generative AI produces new outputs such as text, images, or code.",
+            "AI that only blocks malware is wrong because malware blocking is not the definition of generative AI.",
+            "AI that replaces RAM is wrong because AI does not function as physical computer memory."
+          ]
+        ),
+        makeQuestion(
+          "3.0 Applications and Software",
+          "AI assistants in software are commonly used for:",
+          ["Predictive suggestions","Physically upgrading hardware","Replacing internet cables","Formatting the monitor"],
+          0,
+          "Predictive suggestions is correct because AI tools often provide recommendations, summaries, and assistance.",
+          [
+            "Predictive suggestions is correct because AI assistants commonly help by forecasting, recommending, or summarizing.",
+            "Physically upgrading hardware is wrong because AI software does not physically replace components.",
+            "Replacing internet cables is wrong because that is a manual hardware task, not a typical AI software function.",
+            "Formatting the monitor is wrong because that is not a standard or meaningful AI assistant use case."
+          ]
+        ),
+        makeQuestion(
+          "3.0 Applications and Software",
+          "Which of the following best describes a service in an OS?",
+          ["A background task","A printed report","A USB port","A monitor setting"],
+          0,
+          "A background task is correct because services run behind the scenes to support system functions.",
+          [
+            "A background task is correct because services usually run without direct user interaction to support the OS or applications.",
+            "A printed report is wrong because that is output, not an operating system service.",
+            "A USB port is wrong because that is a hardware interface.",
+            "A monitor setting is wrong because that is a configuration item, not a background software service."
+          ]
+        ),
+        makeQuestion(
+          "3.0 Applications and Software",
+          "Without an operating system, a computer would:",
+          ["Run applications normally","Be unable to provide a normal environment for applications","Automatically connect to cloud apps","Only lose sound output"],
+          1,
+          "Be unable to provide a normal environment for applications is correct because the OS manages hardware and application execution.",
+          [
+            "Run applications normally is wrong because applications rely on the operating system to manage hardware resources and execution.",
+            "Be unable to provide a normal environment for applications is correct because the OS is essential for coordinating system resources.",
+            "Automatically connect to cloud apps is wrong because cloud connectivity still depends on the operating system and network stack.",
+            "Only lose sound output is wrong because the absence of an OS affects the entire computing environment, not just audio."
+          ]
+        ),
+        makeQuestion(
+          "3.0 Applications and Software",
+          "Which term describes the structure the OS uses to organize files on a drive?",
+          ["Filesystem","Hyperlink","BIOS splash","Refresh rate"],
+          0,
+          "Filesystem is correct because it defines how files and directories are stored and organized.",
+          [
+            "Filesystem is correct because it determines how files and folders are structured and managed on storage media.",
+            "Hyperlink is wrong because it is a link to another resource, usually on the web or in documents.",
+            "BIOS splash is wrong because that is a startup screen shown during boot, not a storage organization method.",
+            "Refresh rate is wrong because it refers to how often a display updates each second."
+          ]
+        )
+      ],
+
+      d4: [
+        makeQuestion(
+          "4.0 Software Development Concepts",
+          "Which type of language is typically converted completely into machine code before execution?",
+          ["Markup","Compiled","Interpreted","Query-only"],
+          1,
+          "Compiled is correct because compiled languages are translated before execution.",
+          [
+            "Markup is wrong because markup languages describe structure or formatting rather than general program execution.",
+            "Compiled is correct because compiled languages are translated into machine code before running.",
+            "Interpreted is wrong because interpreted languages are usually read and executed through an interpreter at runtime.",
+            "Query-only is wrong because that is not the best classification for a general programming language here."
+          ]
+        ),
+        makeQuestion(
+          "4.0 Software Development Concepts",
+          "HTML is best categorized as a:",
+          ["Compiled language","Markup language","Hypervisor language","Binary language"],
+          1,
+          "Markup language is correct because HTML structures the content of a webpage.",
+          [
+            "Compiled language is wrong because HTML is not compiled into machine code like C++.",
+            "Markup language is correct because HTML is used to structure and label webpage content.",
+            "Hypervisor language is wrong because hypervisors are virtualization platforms, not programming language categories.",
+            "Binary language is wrong because HTML is written as human-readable markup, not raw binary."
+          ]
+        ),
+        makeQuestion(
+          "4.0 Software Development Concepts",
+          "Python is commonly considered a(n):",
+          ["Interpreted language","Markup language","Physical interface","Storage standard"],
+          0,
+          "Interpreted language is correct because Python commonly runs through an interpreter.",
+          [
+            "Interpreted language is correct because Python is commonly executed by an interpreter rather than fully compiled ahead of time in the traditional exam sense.",
+            "Markup language is wrong because Python is a programming language used for logic, not page structure markup.",
+            "Physical interface is wrong because Python is software, not hardware.",
+            "Storage standard is wrong because Python is not a data storage technology."
+          ]
+        ),
+        makeQuestion(
+          "4.0 Software Development Concepts",
+          "Which data type stores a whole number?",
+          ["Float","Integer","Boolean","String"],
+          1,
+          "Integer is correct because integers represent whole numbers.",
+          [
+            "Float is wrong because floating-point values represent numbers with decimals or fractions.",
+            "Integer is correct because it stores whole numbers without decimal places.",
+            "Boolean is wrong because it stores true/false values.",
+            "String is wrong because it stores text characters."
+          ]
+        ),
+        makeQuestion(
+          "4.0 Software Development Concepts",
+          "Which data type stores True or False?",
+          ["String","Char","Boolean","Float"],
+          2,
+          "Boolean is correct because it represents logical true/false values.",
+          [
+            "String is wrong because strings store text.",
+            "Char is wrong because a char stores a single character rather than a true/false condition.",
+            "Boolean is correct because it represents two logical states: true or false.",
+            "Float is wrong because floats store numeric values with decimal support."
+          ]
+        ),
+        makeQuestion(
+          "4.0 Software Development Concepts",
+          "If code needs to be reused many times, the best organization is usually a:",
+          ["Function","Monitor","Switch port","Spreadsheet"],
+          0,
+          "Function is correct because reusable code should be placed into a function.",
+          [
+            "Function is correct because a function groups reusable logic into a named unit that can be called repeatedly.",
+            "Monitor is wrong because it is display hardware, not a programming organizational component.",
+            "Switch port is wrong because that is a networking concept, not a coding structure.",
+            "Spreadsheet is wrong because it is an application type, not a programming method for reuse."
+          ]
+        ),
+        makeQuestion(
+          "4.0 Software Development Concepts",
+          "A named storage location whose value can change is a:",
+          ["Constant","Variable","Comment","Library"],
+          1,
+          "Variable is correct because it stores data that may change during execution.",
+          [
+            "Constant is wrong because a constant is intended to stay the same after being set.",
+            "Variable is correct because it is a named location used to store changeable data.",
+            "Comment is wrong because comments are explanatory notes ignored by the computer during execution.",
+            "Library is wrong because a library is a collection of reusable code, not a single storage location."
+          ]
+        ),
+        makeQuestion(
+          "4.0 Software Development Concepts",
+          "Which logic structure chooses between paths based on a condition?",
+          ["Branching","Storage","Compilation","Encoding"],
+          0,
+          "Branching is correct because if/then/else logic makes decisions.",
+          [
+            "Branching is correct because it allows a program to follow different paths based on conditions.",
+            "Storage is wrong because storage refers to saving data, not directing program flow.",
+            "Compilation is wrong because compiling is the translation of code, not a runtime decision structure.",
+            "Encoding is wrong because encoding changes how data is represented, not how logic branches."
+          ]
+        ),
+        makeQuestion(
+          "4.0 Software Development Concepts",
+          "Which loop is most appropriate when you know exactly how many times code should repeat?",
+          ["While loop","For loop","Infinite loop","Branch loop"],
+          1,
+          "For loop is correct because it is used when the repetition count is known.",
+          [
+            "While loop is wrong because it is more often used when repetition continues until a condition changes rather than a known count.",
+            "For loop is correct because it is ideal when the number of iterations is known in advance.",
+            "Infinite loop is wrong because it repeats without stopping and usually indicates a logic error unless intentionally designed.",
+            "Branch loop is wrong because that is not the standard loop type being tested here."
+          ]
+        )
+      ],
+
+      d5: [
+        makeQuestion(
+          "5.0 Data and Database Fundamentals",
+          "Why is business data considered an asset?",
+          ["It has no value","It can support decisions and business operations","It always belongs on paper","It removes the need for security"],
+          1,
+          "It can support decisions and business operations is correct because data has business value.",
+          [
+            "It has no value is wrong because business data can be extremely valuable for operations, analysis, and decision-making.",
+            "It can support decisions and business operations is correct because useful data helps organizations make informed choices and run effectively.",
+            "It always belongs on paper is wrong because business data exists in many forms, especially digital ones.",
+            "It removes the need for security is wrong because valuable data must be protected, not treated as risk-free."
+          ]
+        ),
+        makeQuestion(
+          "5.0 Data and Database Fundamentals",
+          "What is data monetization?",
+          ["Deleting all customer records","Using data to generate revenue or value","Compressing storage","Printing reports"],
+          1,
+          "Using data to generate revenue or value is correct because monetization means turning data into business value.",
+          [
+            "Deleting all customer records is wrong because destroying data does not create value from it.",
+            "Using data to generate revenue or value is correct because monetization means extracting business or financial benefit from data.",
+            "Compressing storage is wrong because compression saves space but is not the same as monetization.",
+            "Printing reports is wrong because generating reports alone does not necessarily create revenue or monetized value."
+          ]
+        ),
+        makeQuestion(
+          "5.0 Data and Database Fundamentals",
+          "A relational database primarily organizes data into:",
+          ["Slides","Tables","Audio tracks","Cables"],
+          1,
+          "Tables is correct because relational databases use rows and columns.",
+          [
+            "Slides is wrong because slides are associated with presentation software, not relational databases.",
+            "Tables is correct because relational databases store information in tables made up of rows and columns.",
+            "Audio tracks is wrong because audio tracks are media elements, not database structures.",
+            "Cables is wrong because cables are physical networking or hardware components, not data structures."
+          ]
+        ),
+        makeQuestion(
+          "5.0 Data and Database Fundamentals",
+          "What uniquely identifies a row in a database table?",
+          ["Foreign key","Primary key","Column title","Cell border"],
+          1,
+          "Primary key is correct because it uniquely identifies each record.",
+          [
+            "Foreign key is wrong because a foreign key links related tables and does not necessarily uniquely identify each row in its own table.",
+            "Primary key is correct because it is used to uniquely identify each record in a table.",
+            "Column title is wrong because it labels a field name, not a unique record.",
+            "Cell border is wrong because it is not a database identification concept at all."
+          ]
+        ),
+        makeQuestion(
+          "5.0 Data and Database Fundamentals",
+          "Which type of data often fits neatly into rows and columns with a fixed schema?",
+          ["Structured data","Non-structured data","Encrypted-only data","Attenuated data"],
+          0,
+          "Structured data is correct because it follows a defined schema.",
+          [
+            "Structured data is correct because it is organized into predictable fields and formats, ideal for relational tables.",
+            "Non-structured data is wrong because unstructured data does not fit neatly into fixed rows and columns.",
+            "Encrypted-only data is wrong because encryption describes protection, not the structural format of the data.",
+            "Attenuated data is wrong because attenuation is a signal-strength concept, not a database data type."
+          ]
+        ),
+        makeQuestion(
+          "5.0 Data and Database Fundamentals",
+          "JSON is commonly considered:",
+          ["Structured only","Semi-structured","Optical media","Volatile memory"],
+          1,
+          "Semi-structured is correct because JSON has organization without a rigid table schema.",
+          [
+            "Structured only is wrong because JSON is generally considered semi-structured rather than strictly tabular structured data.",
+            "Semi-structured is correct because JSON contains organized key/value data without requiring a rigid relational schema.",
+            "Optical media is wrong because JSON is a data format, not a storage medium like CD or DVD.",
+            "Volatile memory is wrong because JSON is not a memory type."
+          ]
+        ),
+        makeQuestion(
+          "5.0 Data and Database Fundamentals",
+          "Photos and videos are commonly considered:",
+          ["Structured data","Non-structured data","Primary keys","Rows"],
+          1,
+          "Non-structured data is correct because media usually does not fit fixed table fields.",
+          [
+            "Structured data is wrong because photos and videos do not typically map neatly into fixed table columns as their core content.",
+            "Non-structured data is correct because media files are generally treated as unstructured data.",
+            "Primary keys is wrong because primary keys are identifiers in database tables, not data classifications for media files.",
+            "Rows is wrong because rows are table elements, not a category used to classify photos and videos."
+          ]
+        ),
+        makeQuestion(
+          "5.0 Data and Database Fundamentals",
+          "What is an important step after creating a backup?",
+          ["Delete the original immediately","Verify the backup can be restored","Turn off encryption permanently","Remove the storage device label"],
+          1,
+          "Verify the backup can be restored is correct because backups must be tested.",
+          [
+            "Delete the original immediately is wrong because removing the source before validation can create major risk.",
+            "Verify the backup can be restored is correct because a backup is only useful if recovery actually works.",
+            "Turn off encryption permanently is wrong because encryption may be an important part of protecting backup data.",
+            "Remove the storage device label is wrong because labeling is not the critical validation step after backup creation."
+          ]
+        ),
+        makeQuestion(
+          "5.0 Data and Database Fundamentals",
+          "Backing up data to remote servers over the internet is called:",
+          ["Local backup","Cloud backup","Cache sync","Onboard firmware"],
+          1,
+          "Cloud backup is correct because the data is stored on remote internet-accessible systems.",
+          [
+            "Local backup is wrong because local backups are kept on-site or directly attached rather than on remote internet services.",
+            "Cloud backup is correct because it stores backup data on remote servers accessed through the internet.",
+            "Cache sync is wrong because caching is for performance optimization, not true backup protection.",
+            "Onboard firmware is wrong because firmware is embedded system software, not a backup destination."
+          ]
+        )
+      ],
+
+      d6: [
+        makeQuestion(
+          "6.0 Security",
+          "In the CIA triad, confidentiality is focused on:",
+          ["Preventing unauthorized disclosure","Making printers faster","Increasing CPU speed","Improving Wi-Fi range"],
+          0,
+          "Preventing unauthorized disclosure is correct because confidentiality protects sensitive data from unauthorized access.",
+          [
+            "Preventing unauthorized disclosure is correct because confidentiality is about keeping information secret from unauthorized parties.",
+            "Making printers faster is wrong because printer performance has nothing to do with confidentiality.",
+            "Increasing CPU speed is wrong because processor performance is not part of the CIA triad definition of confidentiality.",
+            "Improving Wi-Fi range is wrong because signal coverage is unrelated to preventing unauthorized data disclosure."
+          ]
+        ),
+        makeQuestion(
+          "6.0 Security",
+          "Which AAA concept determines what a user is allowed to access?",
+          ["Authentication","Authorization","Accounting","Availability"],
+          1,
+          "Authorization is correct because it defines permissions.",
+          [
+            "Authentication is wrong because authentication verifies identity, not what permissions the user has after logging in.",
+            "Authorization is correct because it determines what actions or resources the user is permitted to access.",
+            "Accounting is wrong because accounting focuses on tracking and logging user activity.",
+            "Availability is wrong because availability is part of the CIA triad, not the AAA permission decision component."
+          ]
+        ),
+        makeQuestion(
+          "6.0 Security",
+          "What does the principle of least privilege mean?",
+          ["Give all users admin rights","Give users only the access they need","Disable all passwords","Allow all traffic"],
+          1,
+          "Give users only the access they need is correct because least privilege reduces unnecessary access.",
+          [
+            "Give all users admin rights is wrong because that grants excessive permissions and increases security risk.",
+            "Give users only the access they need is correct because least privilege limits access to what is necessary for the job.",
+            "Disable all passwords is wrong because removing authentication makes systems less secure, not more secure.",
+            "Allow all traffic is wrong because unrestricted access contradicts the idea of limiting privileges and exposure."
+          ]
+        ),
+        makeQuestion(
+          "6.0 Security",
+          "A fake email designed to trick users into entering passwords is an example of:",
+          ["Phishing","Compression","Defragmentation","Virtualization"],
+          0,
+          "Phishing is correct because it uses deception to steal sensitive information.",
+          [
+            "Phishing is correct because it refers to fraudulent attempts to trick users into revealing credentials or other sensitive data.",
+            "Compression is wrong because compression reduces file size and is unrelated to social engineering attacks.",
+            "Defragmentation is wrong because defragmentation reorganizes data on storage media, not steal credentials.",
+            "Virtualization is wrong because virtualization creates virtual environments and has nothing to do with deceptive password theft emails."
+          ]
+        ),
+        makeQuestion(
+          "6.0 Security",
+          "What is MFA?",
+          ["A type of monitor","Multi-factor authentication","A backup cable","A spreadsheet formula"],
+          1,
+          "Multi-factor authentication is correct because it requires more than one authentication factor.",
+          [
+            "A type of monitor is wrong because MFA is a security control, not display hardware.",
+            "Multi-factor authentication is correct because it combines two or more factors such as something you know, have, or are.",
+            "A backup cable is wrong because MFA is not a cable or hardware connection type.",
+            "A spreadsheet formula is wrong because MFA is unrelated to spreadsheet calculations."
+          ]
+        ),
+        makeQuestion(
+          "6.0 Security",
+          "Someone watching you type your password is an example of:",
+          ["Hashing","Shoulder surfing","Sandboxing","Tokenization"],
+          1,
+          "Shoulder surfing is correct because it involves visually observing sensitive input.",
+          [
+            "Hashing is wrong because hashing is a mathematical transformation of data, not a physical observation attack.",
+            "Shoulder surfing is correct because it describes watching someone enter private information such as a password.",
+            "Sandboxing is wrong because sandboxing isolates software to reduce risk and is not the same as spying on a user.",
+            "Tokenization is wrong because tokenization replaces sensitive values with tokens and does not describe visual spying."
+          ]
+        ),
+        makeQuestion(
+          "6.0 Security",
+          "What should be changed immediately on a new router or IoT device?",
+          ["Screen brightness","Default credentials","Mouse sensitivity","Speaker volume"],
+          1,
+          "Default credentials is correct because factory-set logins are widely known and insecure.",
+          [
+            "Screen brightness is wrong because that is a cosmetic or usability setting, not the primary security concern.",
+            "Default credentials is correct because attackers often know factory usernames and passwords.",
+            "Mouse sensitivity is wrong because it is a user preference setting and not a critical security action.",
+            "Speaker volume is wrong because audio level settings do not secure access to the device."
+          ]
+        ),
+        makeQuestion(
+          "6.0 Security",
+          "Which tool helps store and generate strong unique passwords?",
+          ["Password manager","Patch panel","UPS","KVM switch"],
+          0,
+          "Password manager is correct because it securely stores and generates passwords.",
+          [
+            "Password manager is correct because it is designed to generate, store, and manage strong unique passwords securely.",
+            "Patch panel is wrong because it organizes network cable terminations rather than managing credentials.",
+            "UPS is wrong because it provides backup power and does not store passwords.",
+            "KVM switch is wrong because it allows one set of keyboard, video, and mouse devices to control multiple computers."
+          ]
+        ),
+        makeQuestion(
+          "6.0 Security",
+          "What is ciphertext?",
+          ["Readable original data","Encrypted unreadable data","A Wi-Fi channel","An image format"],
+          1,
+          "Encrypted unreadable data is correct because ciphertext is the output of encryption.",
+          [
+            "Readable original data is wrong because readable original data is called plaintext, not ciphertext.",
+            "Encrypted unreadable data is correct because ciphertext is the scrambled result after encryption is applied.",
+            "A Wi-Fi channel is wrong because ciphertext is a security data term, not a wireless channel number.",
+            "An image format is wrong because ciphertext is not a file format for pictures."
+          ]
+        ),
+        makeQuestion(
+          "6.0 Security",
+          "HTTPS primarily protects:",
+          ["Data in transit","Data at rest only","Printed files","Monitor settings"],
+          0,
+          "Data in transit is correct because HTTPS encrypts network communications.",
+          [
+            "Data in transit is correct because HTTPS secures information while it moves between systems over a network.",
+            "Data at rest only is wrong because HTTPS is mainly about protecting transmitted data, not only stored data.",
+            "Printed files is wrong because HTTPS does not secure information once it has been printed on paper.",
+            "Monitor settings is wrong because HTTPS has nothing to do with display configuration."
+          ]
+        ),
+        makeQuestion(
+          "6.0 Security",
+          "Which wireless option is the strongest commonly recommended choice here?",
+          ["Open","WEP","WPA3","No SSID"],
+          2,
+          "WPA3 is correct because it is the strongest listed wireless security option.",
+          [
+            "Open is wrong because open wireless networks use no encryption and are far less secure.",
+            "WEP is wrong because WEP is outdated and vulnerable.",
+            "WPA3 is correct because it is the strongest modern wireless security standard listed here.",
+            "No SSID is wrong because hiding the SSID does not replace strong encryption and is not the best security choice."
+          ]
+        ),
+        makeQuestion(
+          "6.0 Security",
+          "Which step is a recommended best practice for securing a small wireless router?",
+          ["Keep the default admin password","Use the strongest available encryption","Disable all security features","Leave the network open for guests"],
+          1,
+          "Use the strongest available encryption is correct because strong encryption helps protect the network.",
+          [
+            "Keep the default admin password is wrong because default administrator credentials should be changed immediately.",
+            "Use the strongest available encryption is correct because strong wireless encryption helps protect network access and traffic.",
+            "Disable all security features is wrong because that would make the network much less secure.",
+            "Leave the network open for guests is wrong because open networks expose traffic and allow easy unauthorized access."
+          ]
+        ),
+        makeQuestion(
+          "6.0 Security",
+          "Which concept provides proof that a person cannot reasonably deny performing an action?",
+          ["Availability","Non-repudiation","Latency","Attenuation"],
+          1,
+          "Non-repudiation is correct because it provides evidence tying an action to a party.",
+          [
+            "Availability is wrong because availability means systems or data remain accessible when needed, not that an action can be traced to a specific person.",
+            "Non-repudiation is correct because it provides proof that a specific user or entity performed an action and cannot credibly deny it later.",
+            "Latency is wrong because latency refers to delay in communication or processing, not evidence of who performed an action.",
+            "Attenuation is wrong because attenuation describes a signal becoming weaker over distance or obstacles, not accountability or proof of origin."
+          ]
+        )
+      ]
+    };
+
+    const targets = { d1:9, d2:17, d3:13, d4:9, d5:9, d6:13 };
+
+    let examQuestions = [];
+    let userAnswers = [];
+    let flagged = [];
+    let currentIndex = 0;
+    let timerSeconds = 90 * 60;
+    let timerId = null;
+    let reviewMode = false;
+    let explanationVisible = [];
+
+    function shuffle(arr){
+      const a = [...arr];
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    function shuffleQuestionChoices(question){
+      const pairs = question.options.map((opt, idx) => ({
+        text: opt,
+        originalIndex: idx,
+        explanation: question.explainChoices[idx]
+      }));
+
+      const shuffledPairs = shuffle(pairs);
+      const newAnswer = shuffledPairs.findIndex(x => x.originalIndex === question.answer);
+
+      return {
+        ...question,
+        options: shuffledPairs.map(x => x.text),
+        explainChoices: shuffledPairs.map(x => x.explanation),
+        answer: newAnswer
+      };
+    }
+
+    function buildExam(){
+      let result = [];
+      for(const key of Object.keys(targets)){
+        result = result.concat(shuffle(bank[key]).slice(0, targets[key]));
+      }
+      return shuffle(result).map(q => shuffleQuestionChoices(q));
+    }
+
+    function toggleExtraTime(){
+      const yes = document.getElementById("extraTimeChoice").value === "yes";
+      document.getElementById("extraTimeRow").classList.toggle("hidden", !yes);
+    }
+
+    function startExam(){
+      const extraChoice = document.getElementById("extraTimeChoice").value;
+      const extra = extraChoice === "yes"
+        ? (parseInt(document.getElementById("extraMinutes").value,10) || 0)
+        : 0;
+
+      timerSeconds = (90 + extra) * 60;
+      examQuestions = buildExam();
+      userAnswers = Array(examQuestions.length).fill(null);
+      flagged = Array(examQuestions.length).fill(false);
+      explanationVisible = Array(examQuestions.length).fill(false);
+      currentIndex = 0;
+      reviewMode = false;
+
+      document.getElementById("startView").classList.add("hidden");
+      document.getElementById("resultsView").classList.add("hidden");
+      document.getElementById("examView").classList.remove("hidden");
+
+      renderPalette();
+      renderQuestion();
+      startTimer();
+    }
+
+    function startTimer(){
+      clearInterval(timerId);
+      updateTimer();
+      timerId = setInterval(()=>{
+        timerSeconds--;
+        updateTimer();
+        if(timerSeconds <= 0){
+          clearInterval(timerId);
+          alert("Time is up. The exam will be submitted now.");
+          submitExam(false);
+        }
+      },1000);
+    }
+
+    function updateTimer(){
+      const m = Math.floor(timerSeconds/60);
+      const s = timerSeconds%60;
+      document.getElementById("timer").textContent =
+        `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+    }
+
+    function renderPalette(){
+      const palette = document.getElementById("palette");
+      palette.innerHTML = "";
+
+      examQuestions.forEach((q,i)=>{
+        const div = document.createElement("div");
+        div.className = "palette-btn";
+        div.textContent = i + 1;
+
+        if(i === currentIndex) div.classList.add("current");
+
+        if(reviewMode){
+          div.classList.add("review");
+        } else if(flagged[i]){
+          div.classList.add("flagged");
+        } else if(userAnswers[i] !== null){
+          div.classList.add("answered");
+        }
+
+        div.onclick = ()=>{
+          currentIndex = i;
+          renderQuestion();
+        };
+
+        palette.appendChild(div);
+      });
+    }
+
+    function renderQuestion(){
+      const q = examQuestions[currentIndex];
+      document.getElementById("qMeta").textContent = `Question ${currentIndex + 1} of ${examQuestions.length}`;
+      document.getElementById("domainMeta").textContent = q.domain;
+      document.getElementById("questionText").textContent = q.q;
+
+      const box = document.getElementById("optionsBox");
+      box.innerHTML = "";
+
+      q.options.forEach((opt, idx)=>{
+        const div = document.createElement("div");
+        div.className = "option";
+        div.textContent = opt;
+
+        if(userAnswers[currentIndex] === idx) div.classList.add("selected");
+
+        if(reviewMode){
+          if(idx === q.answer) div.classList.add("correct");
+          if(userAnswers[currentIndex] === idx && idx !== q.answer) div.classList.add("incorrect");
+        } else if(userAnswers[currentIndex] === null){
+          div.onclick = ()=>selectAnswer(idx);
+        } else {
+          if(idx === q.answer) div.classList.add("correct");
+          if(userAnswers[currentIndex] === idx && idx !== q.answer) div.classList.add("incorrect");
+        }
+
+        box.appendChild(div);
+      });
+
+      renderExplanation();
+      renderStatus();
+      renderPalette();
+    }
+
+    function selectAnswer(idx){
+      if(reviewMode) return;
+      if(userAnswers[currentIndex] !== null) return;
+      userAnswers[currentIndex] = idx;
+      renderQuestion();
+    }
+
+    function toggleExplanation(){
+      if(userAnswers[currentIndex] === null && !reviewMode){
+        alert("Answer the question first to view the explanation.");
+        return;
+      }
+      explanationVisible[currentIndex] = !explanationVisible[currentIndex];
+      renderExplanation();
+    }
+
+    function renderExplanation(){
+      const box = document.getElementById("explanationBox");
+      const q = examQuestions[currentIndex];
+      const selected = userAnswers[currentIndex];
+
+      if((!explanationVisible[currentIndex] && !reviewMode) || (selected === null && !reviewMode)){
+        box.classList.add("hidden");
+        box.innerHTML = "";
+        return;
+      }
+
+      let html = `
+        <h4>Explanation</h4>
+        <p class="${selected === q.answer ? 'good' : 'bad'}">
+          <strong>Your answer:</strong>
+          ${selected !== null ? q.options[selected] : "No answer selected"}
+          ${selected === null ? "" : (selected === q.answer ? " — Correct" : " — Incorrect")}
+        </p>
+        <p class="neutral"><strong>Why the correct answer is right:</strong> ${q.explainCorrect}</p>
+        <hr style="border-color:var(--border);opacity:.4;">
+        <p class="neutral"><strong>Answer choice review:</strong></p>
+      `;
+
+      q.options.forEach((opt, idx)=>{
+        const cls = idx === q.answer ? "good" : "bad";
+        html += `<p class="${cls}"><strong>${opt}:</strong> ${q.explainChoices[idx]}</p>`;
+      });
+
+      box.classList.remove("hidden");
+      box.innerHTML = html;
+    }
+
+    function renderStatus(){
+      const parts = [];
+      parts.push(userAnswers[currentIndex] === null ? "Unanswered" : "Answered");
+      if(flagged[currentIndex]) parts.push("Flagged");
+      if(reviewMode) parts.push("Review mode");
+      document.getElementById("statusLine").textContent = parts.join(" • ");
+    }
+
+    function prevQuestion(){
+      if(currentIndex > 0){
+        currentIndex--;
+        renderQuestion();
+      }
+    }
+
+    function nextQuestion(){
+      if(currentIndex < examQuestions.length - 1){
+        currentIndex++;
+        renderQuestion();
+      }
+    }
+
+    function toggleFlag(){
+      if(reviewMode) return;
+      flagged[currentIndex] = !flagged[currentIndex];
+      renderQuestion();
+    }
+
+    function goToFirstUnanswered(){
+      const idx = userAnswers.findIndex(v => v === null);
+      if(idx === -1){
+        alert("All questions have been answered.");
+        return;
+      }
+      currentIndex = idx;
+      renderQuestion();
+    }
+
+    function getRecommendation(percent){
+      if(percent < 60) return { text:"High priority review", cls:"priority-high" };
+      if(percent < 75) return { text:"Needs more study", cls:"priority-medium" };
+      if(percent < 90) return { text:"Review lightly", cls:"priority-light" };
+      return { text:"Strong area", cls:"priority-strong" };
+    }
+
+    function submitExam(askConfirm){
+      if(askConfirm){
+        const unanswered = userAnswers.filter(v => v === null).length;
+        const flaggedCount = flagged.filter(Boolean).length;
+        const ok = confirm(`Submit exam now?\n\nUnanswered: ${unanswered}\nFlagged: ${flaggedCount}`);
+        if(!ok) return;
+      }
+
+      clearInterval(timerId);
+
+      let correct = 0;
+      const domainStats = {};
+
+      examQuestions.forEach((q,i)=>{
+        if(!domainStats[q.domain]){
+          domainStats[q.domain] = { total:0, correct:0, wrong:0 };
+        }
+
+        domainStats[q.domain].total++;
+
+        if(userAnswers[i] === q.answer){
+          correct++;
+          domainStats[q.domain].correct++;
+        } else {
+          domainStats[q.domain].wrong++;
+        }
+      });
+
+      const pct = Math.round((correct / examQuestions.length) * 100);
+      const unanswered = userAnswers.filter(v => v === null).length;
+      const flaggedCount = flagged.filter(Boolean).length;
+
+      const domainBreakdown = Object.entries(domainStats)
+        .map(([domain, stats])=>{
+          const percent = Math.round((stats.correct / stats.total) * 100);
+          return { domain, ...stats, percent, rec:getRecommendation(percent) };
+        })
+        .sort((a,b)=>a.percent - b.percent);
+
+      document.getElementById("examView").classList.add("hidden");
+      document.getElementById("resultsView").classList.remove("hidden");
+
+      document.getElementById("summaryGrid").innerHTML = `
+        <div class="summary-box"><strong>Score</strong><br>${correct} / ${examQuestions.length}</div>
+        <div class="summary-box"><strong>Percentage</strong><br>${pct}%</div>
+        <div class="summary-box"><strong>Unanswered</strong><br>${unanswered}</div>
+        <div class="summary-box"><strong>Flagged</strong><br>${flaggedCount}</div>
+      `;
+
+      const domainRows = domainBreakdown.map(d => `
+        <tr>
+          <td>${d.domain}</td>
+          <td>${d.correct}/${d.total}</td>
+          <td>${d.wrong}</td>
+          <td>${d.percent}%</td>
+        </tr>
+      `).join("");
+
+      const studyCards = domainBreakdown.map(d => `
+        <div class="summary-box ${d.rec.cls}">
+          <strong>${d.domain}</strong><br>
+          Correct: ${d.correct}/${d.total}<br>
+          Wrong: ${d.wrong}<br>
+          Score: ${d.percent}%<br>
+          Recommendation: ${d.rec.text}
+        </div>
+      `).join("");
+
+      const weakest = domainBreakdown[0];
+      const strongest = domainBreakdown[domainBreakdown.length - 1];
+
+      document.getElementById("resultsSections").innerHTML = `
+        <div class="card" style="padding:20px;">
+          <h3>Domain Breakdown</h3>
+          <table class="domain-table">
+            <thead>
+              <tr>
+                <th>Domain</th>
+                <th>Correct</th>
+                <th>Wrong</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${domainRows}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card" style="padding:20px;">
+          <h3>What You Need to Study</h3>
+          <p><strong>Weakest area:</strong> ${weakest.domain} (${weakest.percent}%)</p>
+          <p><strong>Strongest area:</strong> ${strongest.domain} (${strongest.percent}%)</p>
+          <div class="study-grid">
+            ${studyCards}
+          </div>
+        </div>
+      `;
+    }
+
+    function enterReviewMode(){
+      reviewMode = true;
+      for(let i=0;i<explanationVisible.length;i++) explanationVisible[i] = true;
+      currentIndex = 0;
+      document.getElementById("resultsView").classList.add("hidden");
+      document.getElementById("examView").classList.remove("hidden");
+      renderQuestion();
+    }
+
+    function restartExam(){
+      clearInterval(timerId);
+      document.getElementById("resultsView").classList.add("hidden");
+      document.getElementById("examView").classList.add("hidden");
+      document.getElementById("startView").classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
